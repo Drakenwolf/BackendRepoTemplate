@@ -1,0 +1,14 @@
+{
+  "name": "BackendRepoTemplate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "drakenwolf <hans.haar6@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
