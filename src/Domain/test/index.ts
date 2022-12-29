@@ -1,18 +1,18 @@
 import type { Pool } from 'pg'
 import { PGRepository } from '../../Repo'
 
-export interface Nft {
+export interface Test {
     id: string
     owner: string
     networkId: number
     collectionName: string
 }
 
-export class NftRepository extends PGRepository<Nft> {
+export class TestRepository extends PGRepository<Test> {
     constructor(pool: Pool) {
         super({
             pool,
-            table: 'nft',
+            table: 'test',
             mapping: {
                 id: 'id',
                 owner: 'address',

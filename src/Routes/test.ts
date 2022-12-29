@@ -1,55 +1,51 @@
 
 
 import express, { Request, Response } from "express";
-// import { UserRepository } from "../Domain/user";
-// import DbGLobal from "../db/DbGlobal";
-// import * as users from "../Domain/user"
-// import { commit, isUniqueErr, rollback, startTrx } from "../Repo";
+import { TestRepository } from "../Domain/test";
+import DbGLobal from "../db/DbGlobal";
+import * as test from "../Domain/test"
+import { commit, isUniqueErr, rollback, startTrx } from "../Repo";
 
 
 const router = express.Router();
-// const pool = DbGLobal.getInstance().pool;
+const pool = DbGLobal.getInstance().pool;
 
-// const usersRepo = new users.UserRepository(pool)
+const testRepo = new test.TestRepository(pool)
 
 router.get("/:id", async (req: Request, res: Response) => {
-//   const user = await usersRepo.findOne(req.params.id, {
-//     select: ['id', 'username', 'walletAddress'],
-//   })
+  const test = await testRepo.findOne(req.params.id, {
+    select: ['id'],
+  })
 
   res.send({
-    // user: user ?? null,
+    // test: test ?? null,
   })
 });
 
 
 router.post("/", async (req: Request, res: Response) => {
-    // const body = req.body;
-    // const tx = await startTrx(pool)
-    // try {
-    //   const user = await usersRepo.create({
-    //     username: body.username,
-    //     walletAddress: body.walletAddress,
-    //     socialId: body.socialId,
-    //   }, tx)
+    const {body} = req;
+    const tx = await startTrx(pool)
+    try {
+      const test = await testRepo.create({}, tx)
 
-    //   await commit(tx)
+      await commit(tx)
 
-    //   res.status(201)
-    //   res.send({ user: user ?? null })
-    // } catch (e) {
-    //   await rollback(tx)
+      res.status(201)
+      res.send({ test: test ?? null })
+    } catch (e) {
+      await rollback(tx)
 
-    //   if (isUniqueErr(e)) {
-    //     res.status(400)
+      if (isUniqueErr(e)) {
+        res.status(400)
 
-    //     res.send({ message: 'User aleady exist!' })
-    //   }
+        res.send({ message: 'test aleady exist!' })
+      }
 
-    //   throw e
-    // } finally {
-    //   tx.release()
-    // }
+      throw e
+    } finally {
+      tx.release()
+    }
 });
 
 module.exports = router;
